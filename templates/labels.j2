@@ -45,7 +45,7 @@ traefik.http.routers.{{ freshrss_identifier }}.tls={{ freshrss_container_labels_
 traefik.http.routers.{{ freshrss_identifier }}.tls.certResolver={{ freshrss_container_labels_traefik_tls_certResolver }}
 {% endif %}
 
-traefik.http.services.{{ freshrss_identifier }}.loadbalancer.server.port=80
+traefik.http.services.{{ freshrss_identifier }}.loadbalancer.server.port={{ freshrss_container_http_port }}
 {% endif %}
 
 {{ freshrss_container_labels_additional_labels }}

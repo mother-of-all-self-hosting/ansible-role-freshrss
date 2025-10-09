@@ -1,10 +1,12 @@
 {#
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 SPDX-FileCopyrightText: 2024 Alejandro AR
+SPDX-FileCopyrightText: 2024 Nikita Chernyi
+SPDX-FileCopyrightText: 2025 Suguru Hirahara
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 #}
 
-#jinja2: lstrip_blocks: True
 [Unit]
 Description=FreshRSS ({{ freshrss_identifier }})
 {% for service in freshrss_systemd_required_services_list %}
@@ -16,32 +18,35 @@ DefaultDependencies=no
 [Service]
 Type=simple
 Environment="HOME={{ devture_systemd_docker_base_systemd_unit_home_path }}"
-ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} kill {{ freshrss_identifier }} 2>/dev/null || true'
+ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} stop -t {{ devture_systemd_docker_base_container_stop_grace_time_seconds }} {{ freshrss_identifier }} 2>/dev/null || true'
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ freshrss_identifier }} 2>/dev/null || true'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
-			--rm \
-			--name={{ freshrss_identifier }} \
-			--log-driver=none \
-			--network={{ freshrss_container_network }} \
-			--user={{ freshrss_uid }}:{{ freshrss_gid }} \
-			--cap-drop=ALL \
-   			--cap-add=SETGID \
-			--cap-add=SETUID \
-			--cap-add=FOWNER \
-			--cap-add=CHOWN \
-			--env-file={{ freshrss_base_path }}/env \
-			--label-file={{ freshrss_base_path }}/labels \
-			--mount type=bind,src={{ freshrss_data_path }},dst=/var/www/FreshRSS/data \
-			--mount type=bind,src={{ freshrss_extensions_path }},dst=/var/www/FreshRSS/extensions \
-			{% for volume in freshrss_container_additional_volumes %}
+      --rm \
+      --name={{ freshrss_identifier }} \
+      --log-driver=none \
+      --network={{ freshrss_container_network }} \
+      --user={{ freshrss_uid }}:{{ freshrss_gid }} \
+      --cap-drop=ALL \
+      --cap-add=SETGID \
+      --cap-add=SETUID \
+      --cap-add=FOWNER \
+      --cap-add=CHOWN \
+      {% if freshrss_container_http_host_bind_port %}
+      -p {{ freshrss_container_http_host_bind_port }}:{{ freshrss_container_http_port }} \
+      {% endif %}
+      --env-file={{ freshrss_base_path }}/env \
+      --label-file={{ freshrss_base_path }}/labels \
+      --mount type=bind,src={{ freshrss_data_path }},dst=/var/www/FreshRSS/data \
+      --mount type=bind,src={{ freshrss_extensions_path }},dst=/var/www/FreshRSS/extensions \
+      {% for volume in freshrss_container_additional_volumes %}
       --mount type={{ volume.type | default('bind' if '/' in volume.src else 'volume') }},src={{ volume.src }},dst={{ volume.dst }}{{ (',' + volume.options) if volume.options else '' }} \
       {% endfor %}
-			--tmpfs=/tmp:rw,noexec,nosuid,size=512m \
-			{% for arg in freshrss_container_extra_arguments %}
-			{{ arg }} \
-			{% endfor %}
-			{{ freshrss_container_image }}
+      --tmpfs=/tmp:rw,noexec,nosuid,size=512m \
+      {% for arg in freshrss_container_extra_arguments %}
+      {{ arg }} \
+      {% endfor %}
+      {{ freshrss_container_image }}
 
 {% for network in freshrss_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ freshrss_identifier }}
@@ -49,7 +54,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network conne
 
 ExecStart={{ devture_systemd_docker_base_host_command_docker }} start --attach {{ freshrss_identifier }}
 
-ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} kill {{ freshrss_identifier }} 2>/dev/null || true'
+ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} stop -t {{ devture_systemd_docker_base_container_stop_grace_time_seconds }} {{ freshrss_identifier }} 2>/dev/null || true'
 ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ freshrss_identifier }} 2>/dev/null || true'
 
 Restart=always
