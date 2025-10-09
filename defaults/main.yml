@@ -178,7 +178,14 @@ freshrss_systemd_wanted_services_list_default: []
 freshrss_systemd_wanted_services_list_auto: []
 freshrss_systemd_wanted_services_list_custom: []
 
-# PostgreSQL database configuration
+# Specify database to use
+# Valid values: mysql, postgres, sqlite
+freshrss_database_type: ""
+
+freshrss_database_mysql_hostname: ""
+freshrss_database_mysql_port: 3306
+freshrss_database_mysql_username: freshrss
+freshrss_database_mysql_password: ""
 freshrss_database_hostname: ""
 freshrss_database_port: 5432
 freshrss_database_username: freshrss

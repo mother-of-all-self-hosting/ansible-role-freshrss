@@ -24,6 +24,28 @@
     - freshrss_hostname
     - freshrss_path_prefix
     - freshrss_container_network
+
+- name: Fail if FreshRSS database type invalid
+  ansible.builtin.fail:
+    msg: >-
+      freshrss_database_type must be 'mysql', 'postgres' or 'sqlite'
+  when: "freshrss_database_type not in ['mysql', 'postgres', 'sqlite']"
+
+- name: Fail if required FreshRSS + MySQL integration settings not defined
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) when `freshrss_database_type` is `mysql`
+  when: "freshrss_database_type == 'mysql' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
+    - freshrss_database_mysql_hostname
+    - freshrss_database_mysql_password
+
+- name: Fail if required FreshRSS + Postgres integration settings not defined
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) when `freshrss_database_type` is `postgres`
+  when: "freshrss_database_type == 'postgres' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
     - freshrss_database_hostname
     - freshrss_database_password
 
