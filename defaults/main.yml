@@ -97,7 +97,7 @@ freshrss_container_labels_traefik_additional_response_headers_auto: |
     | combine ({'X-XSS-Protection': freshrss_http_header_xss_protection} if freshrss_http_header_xss_protection else {})
     | combine ({'X-Content-Type-Options': freshrss_http_header_content_type_options} if freshrss_http_header_content_type_options else {})
     | combine ({'Content-Security-Policy': freshrss_http_header_content_security_policy} if freshrss_http_header_content_security_policy else {})
-    | combine ({'Permission-Policy': freshrss_http_header_content_permission_policy} if freshrss_http_header_content_permission_policy else {})
+    | combine ({'Permissions-Policy': freshrss_http_header_permissions_policy} if freshrss_http_header_permissions_policy else {})
     | combine ({'Strict-Transport-Security': freshrss_http_header_strict_transport_security} if freshrss_http_header_strict_transport_security and freshrss_container_labels_traefik_tls else {})
   }}
 freshrss_container_labels_traefik_additional_response_headers_custom: {}
@@ -129,9 +129,9 @@ freshrss_http_header_content_type_options: nosniff
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 freshrss_http_header_content_security_policy: frame-ancestors 'self'
 
-# Specifies the value of the `Permission-Policy` header.
-# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permission-Policy
-freshrss_http_header_content_permission_policy: "{{ 'interest-cohort=()' if freshrss_floc_optout_enabled else '' }}"
+# Specifies the value of the `Permissions-Policy` header.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
+freshrss_http_header_permissions_policy: "{{ 'interest-cohort=()' if freshrss_floc_optout_enabled else '' }}"
 
 # Specifies the value of the `Strict-Transport-Security` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
@@ -157,7 +157,7 @@ freshrss_floc_optout_enabled: true
 # - https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
 # - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 # - https://hstspreload.org/#opt-in
-# See: `freshrss_http_header_strict_transport_security`
+# See: `freshrss_http_header_permissions_policy`
 freshrss_hsts_preload_enabled: false
 
 # List of systemd services that freshrss.service depends on
