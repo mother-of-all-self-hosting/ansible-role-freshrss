@@ -39,9 +39,11 @@ freshrss_hostname: ""
 # This value must either be `/` or not end with a slash (e.g. `/freshrss`).
 freshrss_path_prefix: /
 
-freshrss_container_image: "{{ freshrss_container_image_registry_prefix }}/freshrss/freshrss:{{ freshrss_container_image_tag }}"
-freshrss_container_image_registry_prefix: registry.hub.docker.com
+freshrss_container_image: "{{ freshrss_container_image_registry_prefix }}freshrss/freshrss:{{ freshrss_container_image_tag }}"
 freshrss_container_image_tag: "{{ freshrss_version }}"
+freshrss_container_image_registry_prefix: "{{ freshrss_container_image_registry_prefix_upstream }}"
+freshrss_container_image_registry_prefix_upstream: "{{ freshrss_container_image_registry_prefix_upstream_default }}"
+freshrss_container_image_registry_prefix_upstream_default: docker.io/
 freshrss_container_image_force_pull: "{{ freshrss_container_image.endswith(':latest') }}"
 
 # Controls whether the container exposes its HTTP port (tcp/80 in the container).
