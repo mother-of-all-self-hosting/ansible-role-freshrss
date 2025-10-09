@@ -1,15 +1,25 @@
+# SPDX-FileCopyrightText: 2023 - 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2024 Alejandro AR
+# SPDX-FileCopyrightText: 2024 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2024 Sergio Durigan Junior
+# SPDX-FileCopyrightText: 2025 MASH project contributors
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
 # Project source code URL: https://github.com/freshrss/freshrss
 
-# Enable or disable FreshRSS deployment
 freshrss_enabled: true
 
-# Identifier string for FreshRSS resources (e.g. container names, network names)
 freshrss_identifier: freshrss
+freshrss_base_path: "/{{ freshrss_identifier }}"
+freshrss_data_path: "{{ freshrss_base_path }}/data"
+freshrss_extensions_path: "{{ freshrss_base_path }}/extensions"
+
+# renovate: datasource=docker depName=freshrss/freshrss
+freshrss_version: 1.26.3
 
 # User ID and Group ID for running FreshRSS service in the container
 #
@@ -25,22 +35,9 @@ freshrss_scheme: https
 # The hostname at which FreshRSS is served
 freshrss_hostname: ""
 
-# The path at which FreshRSS is served, must either be `/` or not end with a slash (e.g. `/freshrss`)
+# The path at which FreshRSS is exposed.
+# This value must either be `/` or not end with a slash (e.g. `/freshrss`).
 freshrss_path_prefix: /
-
-# Version of FreshRSS to deploy
-freshrss_version: 1.26.3
-
-# Base path for FreshRSS resources
-freshrss_base_path: "/{{ freshrss_identifier }}"
-freshrss_data_path: "{{ freshrss_base_path }}/data"
-freshrss_extensions_path: "{{ freshrss_base_path }}/extensions"
-
-# Timezone configuration for FreshRSS
-freshrss_timezone: UTC
-
-# Cron job to refresh feeds at specified minutes for FreshRSS
-freshrss_cron_min: "2,32"
 
 freshrss_container_image: "{{ freshrss_container_image_registry_prefix }}/freshrss/freshrss:{{ freshrss_container_image_tag }}"
 freshrss_container_image_registry_prefix: registry.hub.docker.com
@@ -96,9 +93,6 @@ freshrss_container_labels_additional_labels: ""
 # A list of extra arguments to pass to the container
 freshrss_container_extra_arguments: []
 
-# List of systemd services that freshrss.service depends on
-freshrss_systemd_required_services_list: ["docker.service"]
-
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 #
@@ -150,12 +144,21 @@ freshrss_floc_optout_enabled: true
 # See: `freshrss_http_header_strict_transport_security`
 freshrss_hsts_preload_enabled: false
 
+# List of systemd services that freshrss.service depends on
+freshrss_systemd_required_services_list: ["docker.service"]
+
 # PostgreSQL database configuration
-freshrss_database_username: freshrss
-freshrss_database_password: ""
 freshrss_database_hostname: ""
 freshrss_database_port: 5432
+freshrss_database_username: freshrss
+freshrss_database_password: ""
 freshrss_database_name: freshrss
+
+# Timezone configuration for FreshRSS
+freshrss_timezone: UTC
+
+# Cron job to refresh feeds at specified minutes for FreshRSS
+freshrss_cron_min: "2,32"
 
 # Controls the TZ environment variable
 freshrss_environment_variable_timezone: "{{ freshrss_timezone }}"
