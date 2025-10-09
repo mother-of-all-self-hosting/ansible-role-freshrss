@@ -8,7 +8,8 @@
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ freshrss_identifier }}.service"
   register: freshrss_service_stat
 
-- when: freshrss_service_stat.stat.exists | bool
+- name: Uninstall FreshRSS systemd services and files
+  when: freshrss_service_stat.stat.exists | bool
   block:
     - name: Ensure FreshRSS systemd service is stopped
       ansible.builtin.service:

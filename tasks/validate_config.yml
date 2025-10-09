@@ -18,7 +18,8 @@
     - freshrss_database_hostname
     - freshrss_database_password
 
-- when: freshrss_container_labels_traefik_enabled | bool
+- name: Run if Traefik is enabled
+  when: freshrss_container_labels_traefik_enabled | bool
   block:
     - name: Fail if required FreshRSS Traefik settings not defined
       ansible.builtin.fail:
