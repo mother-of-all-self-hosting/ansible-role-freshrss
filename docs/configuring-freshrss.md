@@ -9,6 +9,7 @@ SPDX-FileCopyrightText: 2022 François Darveau
 SPDX-FileCopyrightText: 2022 Julian Foad
 SPDX-FileCopyrightText: 2022 Warren Bailey
 SPDX-FileCopyrightText: 2023 Antonis Christofides
+SPDX-FileCopyrightText: 2023 Alejandro AR
 SPDX-FileCopyrightText: 2023 Felix Stupp
 SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
 SPDX-FileCopyrightText: 2023 Pierre 'McFly' Marty
@@ -20,11 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Setting up FreshRSS
 
-This is an [Ansible](https://www.ansible.com/) role which installs [FreshRSS](https://freshrss.net/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
+This is an [Ansible](https://www.ansible.com/) role which installs [FreshRSS](https://freshrss.org/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
-FreshRSS is a simple server for sending and receiving messages.
+FreshRSS is a self-hosted RSS and Atom feed aggregator, which is lightweight, easy to work with, powerful, and customizable.
 
-See the project's [documentation](https://freshrss.net/docs/) to learn what FreshRSS does and why it might be useful to you.
+See the project's [documentation](https://freshrss.github.io/FreshRSS/) to learn what FreshRSS does and why it might be useful to you.
 
 ## Prerequisites
 
@@ -64,7 +65,7 @@ freshrss_hostname: "example.com"
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting FreshRSS under a subpath (by configuring the `freshrss_path_prefix` variable) does not seem to be possible due to FreshRSS's technical limitations.
+**Note**: hosting FreshRSS under a subpath (by configuring the `freshrss_path_prefix` variable) does not seem to be possible due to FreshRSS's technical limitations. See [this issue](https://github.com/mother-of-all-self-hosting/mash-playbook/issues/116) for details.
 
 ### Specify database
 
@@ -80,18 +81,6 @@ Set `mysql` to use a MySQL compatible database, and `sqlite` to use SQLite. The 
 
 For other settings, check variables such as `freshrss_database_*` on [`defaults/main.yml`](../defaults/main.yml).
 
-### Specify username and password for the first user
-
-You also need to set the initial username and password for the first user by adding the following configuration to your `vars.yml` file:
-
-```yaml
-freshrss_environment_variables_defaultuser_name: YOUR_USERNAME_HERE
-freshrss_environment_variables_defaultuser_pass: YOUR_PASSWORD_HERE
-```
-
->[!NOTE]
-> These values will only be used on the first run. To edit the user thereafter, you'll have to use the web UI.
-
 ### Extending the configuration
 
 There are some additional things you may wish to configure about the component.
@@ -100,7 +89,7 @@ Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `freshrss_environment_variables_additional_variables` variable
 
-See [the official documentation](https://freshrss.net/docs/config) for a complete list of FreshRSS's config options that you could put in `freshrss_environment_variables_additional_variables`.
+See [the official documentation](https://github.com/FreshRSS/FreshRSS/tree/edge/Docker#environment-variables) for a complete list of FreshRSS's config options that you could put in `freshrss_environment_variables_additional_variables`.
 
 ## Installing
 
@@ -116,19 +105,7 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 After running the command for installation, FreshRSS becomes available at the specified hostname like `https://example.com`.
 
-To get started, open the URL with a web browser to log in to the instance.
-
-### Enabling user registration
-
-By default the role is configured to disable user registration. To enable it, add the following configuration to your `vars.yml` file:
-
-```yaml
-freshrss_environment_variables_registration: true
-```
-
-### Integrating services
-
-FreshRSS is not quite useful unless it is integrated with other services. You can find a list of integrations on [this repository](https://github.com/freshrss/contrib).
+To get started, open the URL with a web browser, and follow the set up wizard.
 
 ## Troubleshooting
 
