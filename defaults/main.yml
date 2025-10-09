@@ -32,7 +32,7 @@ freshrss_path_prefix: /
 freshrss_version: 1.26.3
 
 # Base path for FreshRSS resources
-freshrss_base_path: "{{ freshrss_identifier }}"
+freshrss_base_path: "/{{ freshrss_identifier }}"
 freshrss_data_path: "{{ freshrss_base_path }}/data"
 freshrss_extensions_path: "{{ freshrss_base_path }}/extensions"
 
