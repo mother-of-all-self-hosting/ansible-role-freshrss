@@ -88,6 +88,12 @@ freshrss_container_labels_traefik_entrypoints: web-secure
 freshrss_container_labels_traefik_tls: "{{ freshrss_container_labels_traefik_entrypoints != 'web' }}"
 freshrss_container_labels_traefik_tls_certResolver: default # noqa var-naming
 
+# Controls which additional headers to attach to all HTTP requests.
+# To add your own custom request headers, use `freshrss_container_labels_traefik_additional_request_headers_custom`
+freshrss_container_labels_traefik_additional_request_headers: "{{ freshrss_container_labels_traefik_additional_request_headers_auto | combine(freshrss_container_labels_traefik_additional_request_headers_custom) }}"
+freshrss_container_labels_traefik_additional_request_headers_auto: {}
+freshrss_container_labels_traefik_additional_request_headers_custom: {}
+
 # Controls which additional headers to attach to all HTTP responses.
 # To add your own headers, use `freshrss_container_labels_traefik_additional_response_headers_custom`
 freshrss_container_labels_traefik_additional_response_headers: "{{ freshrss_container_labels_traefik_additional_response_headers_auto | combine(freshrss_container_labels_traefik_additional_response_headers_custom) }}"
