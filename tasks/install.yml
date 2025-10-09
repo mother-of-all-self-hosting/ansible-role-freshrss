@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Alejandro AR
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 ---
 - name: Ensure FreshRSS paths exist
   ansible.builtin.file:

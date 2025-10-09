@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2024 Alejandro AR
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Docker Ansible FreshRSS Role
 
 This is an [Ansible](https://www.ansible.com) role which installs [FreshRSS](https://freshrss.org) to run as a [Docker](https://www.docker.com) container wrapped in a systemd service.
