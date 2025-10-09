@@ -166,8 +166,17 @@ freshrss_floc_optout_enabled: true
 # See: `freshrss_http_header_permissions_policy`
 freshrss_hsts_preload_enabled: false
 
-# List of systemd services that freshrss.service depends on
-freshrss_systemd_required_services_list: ["docker.service"]
+# List of systemd services that the FreshRSS systemd service depends on
+freshrss_systemd_required_services_list: "{{ freshrss_systemd_required_services_list_default + freshrss_systemd_required_services_list_auto + freshrss_systemd_required_services_list_custom }}"
+freshrss_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+freshrss_systemd_required_services_list_auto: []
+freshrss_systemd_required_services_list_custom: []
+
+# List of systemd services that the FreshRSS systemd service wants
+freshrss_systemd_wanted_services_list: "{{ freshrss_systemd_wanted_services_list_default + freshrss_systemd_wanted_services_list_auto + freshrss_systemd_wanted_services_list_custom }}"
+freshrss_systemd_wanted_services_list_default: []
+freshrss_systemd_wanted_services_list_auto: []
+freshrss_systemd_wanted_services_list_custom: []
 
 # PostgreSQL database configuration
 freshrss_database_hostname: ""
