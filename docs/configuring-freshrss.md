@@ -107,6 +107,14 @@ After running the command for installation, FreshRSS becomes available at the sp
 
 To get started, open the URL with a web browser, and follow the set up wizard.
 
+### Outputting database credentials
+
+On the set up wizard, it is required to input database credentials to use a MySQL compatible database or Postgres. You can output its credentials by running the playbook as below:
+
+```sh
+ansible-playbook -i inventory/hosts setup.yml --tags=print-freshrss-db-credentials
+```
+
 ## Troubleshooting
 
 ### Check the service's logs

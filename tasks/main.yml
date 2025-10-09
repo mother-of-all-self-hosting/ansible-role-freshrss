@@ -18,6 +18,14 @@
     - name: Install FreshRSS
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
 
+- name: Perform tasks to print database credentials for FreshRSS
+  when: freshrss_enabled | bool
+  tags:
+    - print-freshrss-db-credentials
+  block:
+    - name: Print database credentials for FreshRSS
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/print_db_credentials.yml"
+
 - name: Perform FreshRSS uninstallation tasks
   when: not freshrss_enabled | bool
   tags:
