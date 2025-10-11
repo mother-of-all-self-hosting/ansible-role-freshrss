@@ -95,7 +95,7 @@ freshrss_container_labels_traefik_additional_request_headers_auto: {}
 freshrss_container_labels_traefik_additional_request_headers_custom: {}
 
 # Controls which additional headers to attach to all HTTP responses.
-# To add your own headers, use `freshrss_container_labels_traefik_additional_response_headers_custom`
+# To add your own custom response headers, use `freshrss_container_labels_traefik_additional_response_headers_custom`
 freshrss_container_labels_traefik_additional_response_headers: "{{ freshrss_container_labels_traefik_additional_response_headers_auto | combine(freshrss_container_labels_traefik_additional_response_headers_custom) }}"
 freshrss_container_labels_traefik_additional_response_headers_auto: |
   {{
@@ -107,6 +107,7 @@ freshrss_container_labels_traefik_additional_response_headers_auto: |
     | combine ({'Strict-Transport-Security': freshrss_http_header_strict_transport_security} if freshrss_http_header_strict_transport_security and freshrss_container_labels_traefik_tls else {})
   }}
 freshrss_container_labels_traefik_additional_response_headers_custom: {}
+
 # freshrss_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
 # See `../templates/labels.j2` for details.
 #
