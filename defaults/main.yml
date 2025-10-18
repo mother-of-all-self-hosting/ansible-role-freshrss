@@ -134,7 +134,9 @@ freshrss_http_header_content_type_options: nosniff
 
 # Specifies the value of the `Content-Security-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-freshrss_http_header_content_security_policy: frame-ancestors 'self'
+#
+# Add `default-src 'self'` to address the warning on the banner
+freshrss_http_header_content_security_policy: default-src 'self'; frame-ancestors 'self'
 
 # Specifies the value of the `Permissions-Policy` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
