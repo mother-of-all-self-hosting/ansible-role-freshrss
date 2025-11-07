@@ -2,7 +2,7 @@ galaxy_info:
   author: kinduff
   company: kinduff
   role_name: freshrss
-  namespace: kinduff
+  namespace: mash
   description: Ansible Docker FreshRSS
   platforms:
     - name: Debian
