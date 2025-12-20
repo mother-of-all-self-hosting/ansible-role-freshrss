@@ -115,7 +115,9 @@ freshrss_container_labels_traefik_additional_response_headers_custom: {}
 # freshrss_container_labels_additional_labels: |
 #   my.label=1
 #   another.label="here"
-freshrss_container_labels_additional_labels: ""
+freshrss_container_labels_additional_labels: "{{ freshrss_container_labels_additional_labels_auto | combine(freshrss_container_labels_additional_labels_custom) }}"
+freshrss_container_labels_additional_labels_auto: {}
+freshrss_container_labels_additional_labels_custom: {}
 
 # A list of extra arguments to pass to the container
 freshrss_container_extra_arguments: "{{ freshrss_container_extra_arguments_auto + freshrss_container_extra_arguments_custom }}"
