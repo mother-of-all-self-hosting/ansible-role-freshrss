@@ -195,14 +195,11 @@ freshrss_database_username: freshrss
 freshrss_database_password: ""
 freshrss_database_name: freshrss
 
-# Timezone configuration for FreshRSS
-freshrss_timezone: UTC
-
 # Cron job to refresh feeds at specified minutes for FreshRSS
 freshrss_cron_min: "2,32"
 
-# Controls the TZ environment variable
-freshrss_environment_variable_timezone: "{{ freshrss_timezone }}"
+# Specify the timezone
+freshrss_environment_variables_tz: UTC
 
 # Controls the CRON_MIN environment variable
 freshrss_environment_variable_cron_min: "{{ freshrss_cron_min }}"
