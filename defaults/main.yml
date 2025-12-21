@@ -120,7 +120,7 @@ freshrss_container_labels_additional_labels: "{{ freshrss_container_labels_addit
 freshrss_container_labels_additional_labels_auto: {}
 freshrss_container_labels_additional_labels_custom: {}
 
-# A list of extra arguments to pass to the container
+# A list of extra arguments to pass to the container (`docker create` command)
 freshrss_container_extra_arguments: "{{ freshrss_container_extra_arguments_auto + freshrss_container_extra_arguments_custom }}"
 freshrss_container_extra_arguments_auto: []
 freshrss_container_extra_arguments_custom: []
