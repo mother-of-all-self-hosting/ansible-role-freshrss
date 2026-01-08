@@ -113,7 +113,7 @@ freshrss_container_labels_traefik_additional_response_headers_custom: {}
 # To add your own custom labels, use `freshrss_container_labels_additional_labels_custom`
 #
 # Example:
-# freshrss_container_labels_additional_labels_custom: |
+# freshrss_container_labels_additional_labels_custom:
 #   - my.label=1
 #   - another.label="here"
 freshrss_container_labels_additional_labels: "{{ freshrss_container_labels_additional_labels_auto + freshrss_container_labels_additional_labels_custom }}"
