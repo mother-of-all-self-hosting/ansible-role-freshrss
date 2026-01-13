@@ -29,10 +29,10 @@ freshrss_version: 1.28.0
 freshrss_uid: "0"
 freshrss_gid: "33"
 
-# The scheme used for serving FreshRSS (http or https)
+# The scheme used for serving FreshRSS.
 freshrss_scheme: https
 
-# The hostname at which FreshRSS is served
+# The hostname at which FreshRSS is served.
 freshrss_hostname: ""
 
 # The path at which FreshRSS is served.
