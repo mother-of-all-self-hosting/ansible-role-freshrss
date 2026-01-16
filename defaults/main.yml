@@ -120,6 +120,9 @@ freshrss_container_labels_additional_labels: "{{ freshrss_container_labels_addit
 freshrss_container_labels_additional_labels_auto: []
 freshrss_container_labels_additional_labels_custom: []
 
+# Specify the size of the container's tmpfs volume
+freshrss_container_tmpfs_tmp_size: 512m
+
 # A list of extra arguments to pass to the container (`docker create` command)
 freshrss_container_extra_arguments: "{{ freshrss_container_extra_arguments_auto + freshrss_container_extra_arguments_custom }}"
 freshrss_container_extra_arguments_auto: []
