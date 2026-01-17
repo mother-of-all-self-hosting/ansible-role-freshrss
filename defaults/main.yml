@@ -46,13 +46,13 @@ freshrss_container_image_registry_prefix_upstream: "{{ freshrss_container_image_
 freshrss_container_image_registry_prefix_upstream_default: docker.io/
 freshrss_container_image_force_pull: "{{ freshrss_container_image.endswith(':latest') }}"
 
+# The base container network. It will be auto-created by this role if it doesn't exist already.
+freshrss_container_network: "{{ freshrss_identifier }}"
+
 # Controls whether the container exposes its HTTP port (tcp/80 in the container).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 freshrss_container_http_host_bind_port: ""
-
-# The base container network. It will be auto-created by this role if it doesn't exist already.
-freshrss_container_network: "{{ freshrss_identifier }}"
 
 # The port number in the container
 freshrss_container_http_port: 80
