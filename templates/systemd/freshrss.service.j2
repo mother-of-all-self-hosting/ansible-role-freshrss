@@ -30,10 +30,10 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --log-driver=none \
       --user={{ freshrss_uid }}:{{ freshrss_gid }} \
       --cap-drop=ALL \
+      --cap-add=CHOWN \
+      --cap-add=FOWNER \
       --cap-add=SETGID \
       --cap-add=SETUID \
-      --cap-add=FOWNER \
-      --cap-add=CHOWN \
       --network={{ freshrss_container_network }} \
       {% if freshrss_container_http_host_bind_port %}
       -p {{ freshrss_container_http_host_bind_port }}:{{ freshrss_container_http_port }} \
