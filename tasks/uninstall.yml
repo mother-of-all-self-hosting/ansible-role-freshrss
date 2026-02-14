@@ -60,6 +60,7 @@
       community.docker.docker_network:
         name: "{{ freshrss_container_network }}"
         state: absent
+      register: freshrss_network_deletion_result
 
     - name: Ensure FreshRSS container network does not exist via ansible.builtin.command
       when: devture_systemd_docker_base_container_network_creation_method == 'command'
@@ -67,8 +68,8 @@
         cmd: >-
           {{ devture_systemd_docker_base_host_command_docker }} network rm
           {{ freshrss_container_network }}
-      register: network_deletion_result
-      changed_when: freshrss_container_network in network_deletion_result.stdout
+      register: freshrss_network_deletion_result
+      changed_when: freshrss_container_network in freshrss_network_deletion_result.stdout
 
 - name: Check existence of FreshRSS local data path
   ansible.builtin.stat:
