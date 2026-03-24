@@ -12,6 +12,10 @@
   when: "lookup('ansible.builtin.varnames', ('^' + item.old + '$'), wantlist=True) | length > 0"
   with_items:
     - { "old": "freshrss_http_header_content_permission_policy", "new": "freshrss_http_header_permissions_policy" }
+    - { "old": "freshrss_database_hostname", "new": "freshrss_database_postgres_hostname" }
+    - { "old": "freshrss_database_port", "new": "freshrss_database_postgres_port" }
+    - { "old": "freshrss_database_username", "new": "freshrss_database_postgres_username" }
+    - { "old": "freshrss_database_password", "new": "freshrss_database_postgres_password" }
 
 - name: Fail if required FreshRSS settings not defined
   ansible.builtin.fail:
@@ -49,8 +53,8 @@
   when: "freshrss_database_type == 'postgres' and item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
   with_items:
     - { "name": "freshrss_database_postgres_socket_path_host", when: "{{ freshrss_database_postgres_socket_enabled }}" }
-    - { "name": "freshrss_database_hostname", when: "{{ not freshrss_database_postgres_socket_enabled }}" }
-    - { "name": "freshrss_database_password", when: true }
+    - { "name": "freshrss_database_postgres_hostname", when: "{{ not freshrss_database_postgres_socket_enabled }}" }
+    - { "name": "freshrss_database_postgres_password", when: true }
 
 - name: Run if Traefik is enabled
   when: freshrss_container_labels_traefik_enabled | bool

@@ -238,10 +238,10 @@ freshrss_database_mysql_hostname: ""
 freshrss_database_mysql_port: 3306
 freshrss_database_mysql_username: freshrss
 freshrss_database_mysql_password: ""
-freshrss_database_hostname: ""
-freshrss_database_port: 5432
-freshrss_database_username: freshrss
-freshrss_database_password: ""
+freshrss_database_postgres_hostname: ""
+freshrss_database_postgres_port: 5432
+freshrss_database_postgres_username: freshrss
+freshrss_database_postgres_password: ""
 freshrss_database_name: freshrss
 
 # Control if the database connection to MySQL is made via a Unix socket
@@ -264,7 +264,7 @@ freshrss_database_postgres_socket_path_host: ""
 
 # Specify database host address and port or absolute path for Unix socket
 freshrss_database_host_mysql: "{{ freshrss_database_mysql_socket_path_container if freshrss_database_mysql_socket_enabled else freshrss_database_mysql_hostname + ':' + freshrss_database_mysql_port }}"
-freshrss_database_host_postgres: "{{ freshrss_database_postgres_socket_path_container if freshrss_database_postgres_socket_enabled else freshrss_database_hostname + ':' + freshrss_database_port }}"
+freshrss_database_host_postgres: "{{ freshrss_database_postgres_socket_path_container if freshrss_database_postgres_socket_enabled else freshrss_database_postgres_hostname + ':' + freshrss_database_postgres_port }}"
 
 ########################################################################
 #                                                                      #
