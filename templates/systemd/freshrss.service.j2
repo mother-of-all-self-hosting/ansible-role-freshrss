@@ -41,10 +41,10 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --label-file={{ freshrss_base_path }}/labels \
       --mount type=bind,src={{ freshrss_data_path }},dst=/var/www/FreshRSS/data \
       --mount type=bind,src={{ freshrss_extensions_path }},dst=/var/www/FreshRSS/extensions \
-      {% if freshrss_database_mysql_socket_enabled %}
+      {% if freshrss_database_mysql_socket_enabled and freshrss_database_mysql_socket_path_host != '' %}
       --mount type=bind,src={{ freshrss_database_mysql_socket_path_host }},dst={{ freshrss_database_mysql_socket_path_container }} \
       {% endif %}
-      {% if freshrss_database_postgres_socket_enabled %}
+      {% if freshrss_database_postgres_socket_enabled and freshrss_database_postgres_socket_path_host != '' %}
       --mount type=bind,src={{ freshrss_database_postgres_socket_path_host }},dst={{ freshrss_database_postgres_socket_path_container }} \
       {% endif %}
       {% for volume in freshrss_container_additional_volumes %}
