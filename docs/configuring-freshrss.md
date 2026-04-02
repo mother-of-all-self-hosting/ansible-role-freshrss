@@ -67,7 +67,9 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 **Note**: hosting FreshRSS under a subpath (by configuring the `freshrss_path_prefix` variable) does not seem to be possible due to FreshRSS's technical limitations. See [this issue](https://github.com/mother-of-all-self-hosting/mash-playbook/issues/116) for details.
 
-### Specify database
+### Configuring database
+
+#### Specify database
 
 It is necessary to select database used by FreshRSS from a MySQL compatible database, Postgres, and SQLite.
 
@@ -81,7 +83,7 @@ Set `mysql` to use a MySQL compatible database and `sqlite` to use SQLite, respe
 
 For other settings, check variables such as `freshrss_database_*` on [`defaults/main.yml`](../defaults/main.yml).
 
-### Configuring connection to database server (optional)
+#### Configuring connection to the database server (optional)
 
 By default the role is configured to establish connection with the database server via the Unix socket. You can mount the Unix socket by adding the following configuration to your `vars.yml` file:
 
