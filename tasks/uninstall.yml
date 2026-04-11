@@ -80,7 +80,7 @@
   register: freshrss_data_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- name: Notify if FreshRSS local data remains
+- name: Inject the message about the remaining FreshRSS local data path
   when: freshrss_data_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
@@ -98,7 +98,7 @@
   register: freshrss_extensions_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- name: Notify if FreshRSS extensions remain
+- name: Inject the message about the remaining FreshRSS extensions path
   when: freshrss_extensions_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
