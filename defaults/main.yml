@@ -263,8 +263,8 @@ freshrss_database_postgres_socket_path_container: /run-postgres
 freshrss_database_postgres_socket_path_host: ""
 
 # Specify database host address and port or absolute path for Unix socket
-freshrss_database_host_mysql: "{{ freshrss_database_mysql_socket_path_container if freshrss_database_mysql_socket_enabled else freshrss_database_mysql_hostname + ':' + freshrss_database_mysql_port }}"
-freshrss_database_host_postgres: "{{ freshrss_database_postgres_socket_path_container if freshrss_database_postgres_socket_enabled else freshrss_database_postgres_hostname + ':' + freshrss_database_postgres_port }}"
+freshrss_database_host_mysql: "{{ freshrss_database_mysql_socket_path_container if freshrss_database_mysql_socket_enabled else freshrss_database_mysql_hostname + ':' + freshrss_database_mysql_port | string }}"
+freshrss_database_host_postgres: "{{ freshrss_database_postgres_socket_path_container if freshrss_database_postgres_socket_enabled else freshrss_database_postgres_hostname + ':' + freshrss_database_postgres_port | string }}"
 
 ########################################################################
 #                                                                      #
