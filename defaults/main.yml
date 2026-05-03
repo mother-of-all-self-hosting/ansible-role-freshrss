@@ -90,6 +90,9 @@ freshrss_container_labels_traefik_priority: 0
 freshrss_container_labels_traefik_entrypoints: web-secure
 freshrss_container_labels_traefik_tls: "{{ freshrss_container_labels_traefik_entrypoints != 'web' }}"
 freshrss_container_labels_traefik_tls_certResolver: default # noqa var-naming
+freshrss_container_labels_traefik_middleware_basic_auth_enabled: false
+# See: https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/
+freshrss_container_labels_traefik_middleware_basic_auth_users: ""
 
 # Controls which additional headers to attach to all HTTP requests.
 # To add your own custom request headers, use `freshrss_container_labels_traefik_additional_request_headers_custom`
