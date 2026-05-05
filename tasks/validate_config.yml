@@ -16,6 +16,7 @@
     - { "old": "freshrss_database_port", "new": "freshrss_database_postgres_port" }
     - { "old": "freshrss_database_username", "new": "freshrss_database_postgres_username" }
     - { "old": "freshrss_database_password", "new": "freshrss_database_postgres_password" }
+    - { "old": "freshrss_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
 
 - name: Fail if required FreshRSS settings not defined
   ansible.builtin.fail:
