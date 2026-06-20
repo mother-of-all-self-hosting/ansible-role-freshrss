@@ -167,7 +167,7 @@ freshrss_http_header_strict_transport_security: "max-age=31536000; includeSubDom
 # - https://amifloced.org/
 #
 # Of course, a better solution is to just stop using browsers (like Chrome), which participate in such tracking practices.
-# See: `freshrss_content_permission_policy`
+# See: `freshrss_http_header_permissions_policy`
 freshrss_floc_optout_enabled: true
 
 # Controls if HSTS preloading is enabled
@@ -179,7 +179,7 @@ freshrss_floc_optout_enabled: true
 # - https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
 # - https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 # - https://hstspreload.org/#opt-in
-# See: `freshrss_http_header_permissions_policy`
+# See: `freshrss_http_header_strict_transport_security`
 freshrss_hsts_preload_enabled: false
 
 # List of systemd services that the FreshRSS systemd service depends on
