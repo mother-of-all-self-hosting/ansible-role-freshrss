@@ -21,15 +21,14 @@
 - name: Fail if required FreshRSS settings not defined
   ansible.builtin.fail:
     msg: >-
-      You need to define a required configuration setting (`{{ item.name }}`).
-  when: "item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
+      You need to define a required configuration setting (`{{ item }}`).
+  when: "lookup('vars', item, default='') | string | length == 0"
   with_items:
-    - { "name": "freshrss_uid", when: true }
-    - { "name": "freshrss_gid", when: true }
-    - { "name": "freshrss_hostname", when: true }
-    - { "name": "freshrss_path_prefix", when: true }
-    - { "name": "freshrss_container_network", when: true }
-    - { "name": "freshrss_container_labels_traefik_middleware_basic_auth_users", when: "{{ freshrss_container_labels_traefik_middleware_basic_auth_enabled }}" }
+    - freshrss_uid
+    - freshrss_gid
+    - freshrss_hostname
+    - freshrss_path_prefix
+    - freshrss_container_network
 
 - name: Fail if FreshRSS database type invalid
   ansible.builtin.fail:
@@ -101,11 +100,12 @@
     - name: Fail if required FreshRSS Traefik settings not defined
       ansible.builtin.fail:
         msg: >-
-          You need to define a required configuration setting (`{{ item }}`).
-      when: "lookup('vars', item, default='') | string | length == 0"
+          You need to define a required configuration setting (`{{ item.name }}`).
+      when: "item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
       with_items:
-        - freshrss_container_labels_traefik_hostname
-        - freshrss_container_labels_traefik_path_prefix
+        - { "name": "freshrss_container_labels_traefik_hostname", when: true }
+        - { "name": "freshrss_container_labels_traefik_path_prefix", when: true }
+        - { "name": "freshrss_container_labels_traefik_middleware_basic_auth_users", when: "{{ freshrss_container_labels_traefik_middleware_basic_auth_enabled }}" }
 
     # We ensure it doesn't end with a slash, because we handle both (slash and no-slash).
     # Knowing that `freshrss_container_labels_traefik_path_prefix` does not end with a slash
