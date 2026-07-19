@@ -1,0 +1,53 @@
+# SPDX-FileCopyrightText: 2026 Suguru Hirahara
+# SPDX-FileCopyrightText: 2026 spatterlight
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+- name: Verify FreshRSS systemd service
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Wait for FreshRSS service to become active (up to 180s)
+      ansible.builtin.systemd:
+        name: freshrss.service
+      register: freshrss_service
+      until: freshrss_service.status.ActiveState == 'active'
+      retries: 36
+      delay: 5
+
+    - name: Assert FreshRSS service is active
+      ansible.builtin.assert:
+        that: freshrss_service.status.ActiveState == 'active'
+        fail_msg: "freshrss.service not active ({{ freshrss_service.status.ActiveState }})"
+        success_msg: "freshrss.service is active"
+
+    - name: Retrieve FreshRSS service log for debugging
+      when: freshrss_debug_service_enabled | bool
+      ansible.builtin.command:
+        cmd: journalctl -xeu freshrss.service
+      changed_when: false
+
+    - name: Wait for FreshRSS HTTP endpoint to respond (up to 10m)
+      ansible.builtin.uri:
+        url: "http://localhost:80/"
+        method: GET
+        status_code: [200, 302]
+        follow_redirects: none
+      register: freshrss_endpoint
+      until: freshrss_endpoint.status in [200, 302]
+      retries: 120
+      delay: 5
+
+    - name: Assert FreshRSS HTTP endpoint responds
+      ansible.builtin.assert:
+        that: freshrss_endpoint.status in [200, 302]
+        fail_msg: "FreshRSS did not respond as expected ({{ freshrss_endpoint.status | default('no response') }})"
+        success_msg: "FreshRSS responded with {{ freshrss_endpoint.status }}"
+
+    - name: Show FreshRSS systemd service status summary
+      ansible.builtin.debug:
+        msg:
+          - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
+          - "FreshRSS HTTP: {{ freshrss_endpoint.status }}"

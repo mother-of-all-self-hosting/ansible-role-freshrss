@@ -49,6 +49,10 @@ Currently these testing scenarios are available:
 
 Tests a standard FreshRSS installation.
 
+### `mariadb`
+
+Tests a standard FreshRSS installation with the MariaDB database.
+
 ### `postgres`
 
 Tests a standard FreshRSS installation with the Postgres database.
