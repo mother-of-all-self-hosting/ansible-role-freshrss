@@ -22,6 +22,7 @@
   when: freshrss_enabled | bool
   tags:
     - print-freshrss-db-credentials
+    - molecule-notest
   block:
     - name: Print database credentials for FreshRSS
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/print_db_credentials.yml"
