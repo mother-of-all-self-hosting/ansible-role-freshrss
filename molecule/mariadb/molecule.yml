@@ -38,9 +38,9 @@ provisioner:
         freshrss_hostname: localhost
         freshrss_container_labels_traefik_enabled: false
         freshrss_container_http_host_bind_port: 80
-        freshrss_database_type: mysql
 
         # Variables required for FreshRSS to connect to the MariaDB database (via Unix socket)
+        freshrss_database_type: mysql
         freshrss_database_mysql_username: my_database_username
         freshrss_database_mysql_password: my_database_password
         freshrss_database_name: freshrss
