@@ -18,7 +18,7 @@ freshrss_base_path: "/{{ freshrss_identifier }}"
 freshrss_data_path: "{{ freshrss_base_path }}/data"
 freshrss_extensions_path: "{{ freshrss_base_path }}/extensions"
 
-# renovate: datasource=docker depName=freshrss/freshrss
+# renovate: datasource=docker depName=freshrss/freshrss versioning=semver
 freshrss_version: 1.29.1
 
 # User ID and Group ID for running FreshRSS service in the container
