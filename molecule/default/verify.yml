@@ -224,7 +224,7 @@
         fail_msg: "FreshRSS did not create a SQLite database at {{ freshrss_molecule_sqlite_path }}"
         success_msg: "FreshRSS stores its data in SQLite"
 
-    - name: Show a summary of what was verified
+    - name: Show FreshRSS verification summary
       ansible.builtin.debug:
         msg:
           - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
