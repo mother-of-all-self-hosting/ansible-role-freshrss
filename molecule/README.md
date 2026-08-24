@@ -75,6 +75,17 @@ Against the resulting instance, each scenario asserts that:
 - articles fetched from a feed come back out through the authenticated API,
   and are counted in the database
 
+"Google Reader API" is FreshRSS's own name for its mobile-client
+synchronization API, served at `/api/greader.php`: it implements the
+Google Reader-compatible protocol that RSS reader apps standardized on
+after Google Reader itself shut down in 2013, and it is the primary way
+apps like Reeder or FeedMe talk to a FreshRSS instance. Nothing in these
+tests contacts Google - the endpoint is part of FreshRSS and answers
+locally. The tests authenticate through it because it is the instance's
+first-class machine API: a token-authenticated article fetch through it
+proves login and article retrieval end-to-end against a supported
+surface, instead of scraping the web interface.
+
 The feed is served by an nginx sidecar container attached to the FreshRSS
 container network, so no scenario depends on an internet feed being reachable
 or on its contents staying put. `side_effect.yml` starts the sidecar,
