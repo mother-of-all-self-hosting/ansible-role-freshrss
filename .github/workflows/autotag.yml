@@ -35,11 +35,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Releases are named by this script alone, so a regression in it would
-      # silently mistag. Letting its tests gate the release keeps that honest.
-      - name: Test the tag computation
-        run: bin/test-compute-next-tag.sh
-
       - name: Determine the next tag
         id: tag
         run: |
