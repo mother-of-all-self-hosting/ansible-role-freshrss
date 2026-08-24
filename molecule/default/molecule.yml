@@ -31,7 +31,22 @@ provisioner:
         # Helper variables
         freshrss_debug_service_enabled: false
 
+        # Molecule-only variables, shared by side_effect.yml and verify.yml.
+        # They are not consumed by the role itself.
+        freshrss_molecule_user: admin
+        freshrss_molecule_api_password: molecule-api-password
+        freshrss_molecule_web_password: molecule-web-password
+        freshrss_molecule_sidecar_identifier: freshrss-molecule-feed-sidecar
+        freshrss_molecule_sidecar_root: /freshrss-molecule-sidecar
+        freshrss_molecule_sidecar_container_image: docker.io/nginx:alpine
+        freshrss_molecule_feed_title: Molecule Sidecar Feed
+        freshrss_molecule_article_titles:
+          - Molecule Sidecar Article One
+          - Molecule Sidecar Article Two
+
         # Variables for FreshRSS
+        freshrss_identifier: freshrss
+        freshrss_container_network: freshrss
         freshrss_uid: "0"
         freshrss_gid: "33"
         freshrss_scheme: http
@@ -39,6 +54,19 @@ provisioner:
         freshrss_container_labels_traefik_enabled: false
         freshrss_container_http_host_bind_port: 80
         freshrss_database_type: sqlite
+
+        # The role deliberately leaves FreshRSS unconfigured, expecting an
+        # administrator to complete the web installation wizard by hand (see
+        # `tasks/print_db_credentials.yml`). An uninstalled FreshRSS still
+        # answers every HTTP request, so the tests would pass against an
+        # instance that was never set up. Driving the container image's own
+        # non-interactive installation (`cli/do-install.php` and
+        # `cli/create-user.php`, invoked by its entrypoint) gives the tests a
+        # real instance to make assertions about. Both steps are no-ops once
+        # they have run, so this stays safe to replay.
+        freshrss_environment_variables_additional_variables: |
+          FRESHRSS_INSTALL=--api-enabled --db-type sqlite --default-user {{ freshrss_molecule_user }} --environment production --base-url http://localhost/
+          FRESHRSS_USER=--user {{ freshrss_molecule_user }} --password {{ freshrss_molecule_web_password }} --api-password {{ freshrss_molecule_api_password }} --no-default-feeds
   env:
     # Workaround for https://github.com/ansible/molecule/issues/4391
     ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..:/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:~/.ansible/roles

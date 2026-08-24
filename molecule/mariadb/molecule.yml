@@ -31,7 +31,25 @@ provisioner:
         # Helper variables
         freshrss_debug_service_enabled: false
 
+        # Molecule-only variables, shared by side_effect.yml and verify.yml.
+        # They are not consumed by the role itself.
+        freshrss_molecule_user: admin
+        freshrss_molecule_api_password: molecule-api-password
+        freshrss_molecule_web_password: molecule-web-password
+        freshrss_molecule_sidecar_identifier: freshrss-molecule-feed-sidecar
+        freshrss_molecule_sidecar_root: /freshrss-molecule-sidecar
+        freshrss_molecule_sidecar_container_image: docker.io/nginx:alpine
+        freshrss_molecule_feed_title: Molecule Sidecar Feed
+        freshrss_molecule_article_titles:
+          - Molecule Sidecar Article One
+          - Molecule Sidecar Article Two
+        # FreshRSS names its tables `<prefix><user>_<table>` on MySQL and
+        # Postgres. The prefix is the default one, which the role does not touch.
+        freshrss_molecule_table_prefix: freshrss_
+
         # Variables for FreshRSS
+        freshrss_identifier: freshrss
+        freshrss_container_network: freshrss
         freshrss_uid: "0"
         freshrss_gid: "33"
         freshrss_scheme: http
@@ -46,6 +64,20 @@ provisioner:
         freshrss_database_name: freshrss
         freshrss_database_mysql_socket_enabled: true
         freshrss_database_mysql_socket_path_host: "{{ mariadb_run_path }}"
+
+        # The role deliberately leaves FreshRSS unconfigured, expecting an
+        # administrator to complete the web installation wizard by hand and to
+        # type in the database credentials the role prints (see
+        # `tasks/print_db_credentials.yml`). An uninstalled FreshRSS still
+        # answers every HTTP request, so the tests would pass against an
+        # instance that was never set up, and against one that never reached
+        # this database. Driving the container image's own non-interactive
+        # installation gives the tests a real instance to make assertions about.
+        # The database host below is spelled exactly the way the role tells
+        # administrators to spell it, so these tests fail if that advice is wrong.
+        freshrss_environment_variables_additional_variables: |
+          FRESHRSS_INSTALL=--api-enabled --db-type mysql --db-host {{ freshrss_database_host_mysql }}/mysqld.sock --db-user {{ freshrss_database_mysql_username }} --db-password {{ freshrss_database_mysql_password }} --db-base {{ freshrss_database_name }} --default-user {{ freshrss_molecule_user }} --environment production --base-url http://localhost/
+          FRESHRSS_USER=--user {{ freshrss_molecule_user }} --password {{ freshrss_molecule_web_password }} --api-password {{ freshrss_molecule_api_password }} --no-default-feeds
         freshrss_systemd_required_services_list_auto: |
           {{
             (['mariadb.service'])
