@@ -249,7 +249,7 @@
       vars:
         freshrss_backend_titles: "{{ freshrss_backend_query.stdout_lines }}"
 
-    - name: Show FreshRSS verification summary
+    - name: Show the FreshRSS verification summary
       ansible.builtin.debug:
         msg:
           - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
