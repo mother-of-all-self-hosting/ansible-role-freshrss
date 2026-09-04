@@ -80,15 +80,13 @@
       ansible.builtin.set_fact:
         freshrss_served_version: "{{ freshrss_landing_page.content | regex_search('(?<=\"version\":\")[^\"]+') }}"
 
-    - name: Assert the FreshRSS version served matches the configured version
+    - name: Assert the running FreshRSS is the version this role installs
       ansible.builtin.assert:
         that:
           - freshrss_served_version | length > 0
           - freshrss_served_version is match(freshrss_defaults.freshrss_version | regex_escape)
-        fail_msg: >-
-          FreshRSS reports version `{{ freshrss_served_version }}`,
-          which does not match the configured `{{ freshrss_defaults.freshrss_version }}`
-        success_msg: "FreshRSS reports version `{{ freshrss_served_version }}`"
+        fail_msg: "FreshRSS reports {{ freshrss_served_version | default('none') }}, expected {{ freshrss_defaults.freshrss_version }}"
+        success_msg: "FreshRSS reports {{ freshrss_served_version }}"
 
     # Proving the API rejects a wrong password first means the acceptance of the
     # right one below cannot be explained by the API letting everything through.
