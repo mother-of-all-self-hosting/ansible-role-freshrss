@@ -60,7 +60,7 @@
 # The login page embeds a JSON blob describing the running application. It
 # is empty (`{}`) while FreshRSS is uninstalled, so the version can only be
 # read here once the instance is genuinely up.
-- name: Determine the FreshRSS version being served
+- name: Determine the version of the running FreshRSS
   ansible.builtin.set_fact:
     freshrss_served_version: "{{ freshrss_landing_page.content | regex_search('(?<=\"version\":\")[^\"]+') }}"
 
