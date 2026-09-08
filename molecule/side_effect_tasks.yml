@@ -67,8 +67,7 @@
 - name: Ensure the sidecar container serving the feed is running
   ansible.builtin.command:
     cmd: >-
-      docker run
-      --detach
+      docker run -d
       --name={{ freshrss_molecule_sidecar_identifier }}
       --network={{ freshrss_container_network }}
       --mount=type=bind,src={{ freshrss_molecule_sidecar_root }},dst=/usr/share/nginx/html,ro
