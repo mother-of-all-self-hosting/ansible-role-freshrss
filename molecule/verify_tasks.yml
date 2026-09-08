@@ -36,7 +36,7 @@
 - name: Retrieve the FreshRSS systemd service log for debugging
   when: freshrss_debug_service_enabled | bool
   ansible.builtin.command:
-    cmd: journalctl -xeu {{ freshrss_identifier }}.service
+    cmd: journalctl --no-pager --output=cat --unit={{ freshrss_identifier }}.service
   changed_when: false
 
 # A service that systemd reports as active is not necessarily serving yet,
