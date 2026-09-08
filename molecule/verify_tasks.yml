@@ -172,16 +172,11 @@
 # own accounting, rather than only through the API that just served it.
 - name: Retrieve the FreshRSS account summary from the database
   ansible.builtin.command:
-    argv:
-      - docker
-      - exec
-      - --workdir=/var/www/FreshRSS
-      - "{{ freshrss_identifier }}"
-      - php
-      - ./cli/user-info.php
-      - --user
-      - "{{ freshrss_molecule_user }}"
-      - --json
+    cmd: >-
+      docker exec --workdir=/var/www/FreshRSS {{ freshrss_identifier }}
+      php ./cli/user-info.php
+      --user {{ freshrss_molecule_user }}
+      --json
   register: freshrss_user_info
   changed_when: false
 
