@@ -15,7 +15,7 @@
 
 - name: Wait for the FreshRSS systemd service to become active (up to 180s)
   ansible.builtin.systemd_service:
-    name: "{{ freshrss_identifier }}.service"
+    name: freshrss.service
   register: freshrss_service
   until: freshrss_service.status.ActiveState == 'active'
   retries: 36
@@ -36,7 +36,7 @@
 - name: Retrieve the FreshRSS systemd service log for debugging
   when: freshrss_debug_service_enabled | bool
   ansible.builtin.command:
-    cmd: journalctl --no-pager --output=cat --unit={{ freshrss_identifier }}.service
+    cmd: journalctl --no-pager --output=cat --unit=freshrss.service
   changed_when: false
 
 # A service that systemd reports as active is not necessarily serving yet,
@@ -173,7 +173,7 @@
 - name: Retrieve the FreshRSS account summary from the database
   ansible.builtin.command:
     cmd: >-
-      docker exec --workdir=/var/www/FreshRSS {{ freshrss_identifier }}
+      docker exec --workdir=/var/www/FreshRSS freshrss
       php ./cli/user-info.php
       --user {{ freshrss_molecule_user }}
       --json
