@@ -23,56 +23,56 @@
   tasks:
     - name: Verify that FreshRSS works
       block:
-    - name: Run the shared FreshRSS verification tasks
-      ansible.builtin.include_tasks: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/molecule/verify_tasks.yml"
+        - name: Run the shared FreshRSS verification tasks
+          ansible.builtin.include_tasks: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/molecule/verify_tasks.yml"
 
-    # A scenario named after a database is worth nothing unless it proves that
-    # database is the one in use. FreshRSS falls back to SQLite readily, so the
-    # articles are looked for in Postgres itself, and the SQLite database
-    # that a fallback would have produced is required to be absent.
-    - name: Check whether FreshRSS fell back to a SQLite database
-      ansible.builtin.stat:
-        path: "{{ freshrss_molecule_sqlite_path }}"
-      register: freshrss_sqlite_database
+        # A scenario named after a database is worth nothing unless it proves that
+        # database is the one in use. FreshRSS falls back to SQLite readily, so the
+        # articles are looked for in Postgres itself, and the SQLite database
+        # that a fallback would have produced is required to be absent.
+        - name: Check whether FreshRSS fell back to a SQLite database
+          ansible.builtin.stat:
+            path: "{{ freshrss_molecule_sqlite_path }}"
+          register: freshrss_sqlite_database
 
-    - name: Assert FreshRSS did not fall back to SQLite
-      ansible.builtin.assert:
-        that: not freshrss_sqlite_database.stat.exists
-        fail_msg: "FreshRSS fell back to SQLite - it created {{ freshrss_molecule_sqlite_path }}"
-        success_msg: "FreshRSS did not fall back to SQLite"
+        - name: Assert FreshRSS did not fall back to SQLite
+          ansible.builtin.assert:
+            that: not freshrss_sqlite_database.stat.exists
+            fail_msg: "FreshRSS fell back to SQLite - it created {{ freshrss_molecule_sqlite_path }}"
+            success_msg: "FreshRSS did not fall back to SQLite"
 
-    # Queried through the Postgres role's own CLI helper, over the same Unix
-    # socket the FreshRSS container is given.
-    - name: List the articles stored in Postgres
-      ansible.builtin.command:
-        argv:
-          - /postgres/bin/cli-non-interactive
-          - --dbname={{ freshrss_database_name }}
-          - --tuples-only
-          - --no-align
-          - --command=select title from {{ freshrss_molecule_table_prefix }}{{ freshrss_molecule_user }}_entry order by title
-      register: freshrss_backend_query
-      changed_when: false
+        # Queried through the Postgres role's own CLI helper, over the same Unix
+        # socket the FreshRSS container is given.
+        - name: List the articles stored in Postgres
+          ansible.builtin.command:
+            argv:
+              - /postgres/bin/cli-non-interactive
+              - --dbname={{ freshrss_database_name }}
+              - --tuples-only
+              - --no-align
+              - --command=select title from {{ freshrss_molecule_table_prefix }}{{ freshrss_molecule_user }}_entry order by title
+          register: freshrss_backend_query
+          changed_when: false
 
-    - name: Assert the articles from the sidecar feed are stored in Postgres
-      ansible.builtin.assert:
-        that:
-          - freshrss_backend_titles | length == freshrss_molecule_article_titles | length
-          - freshrss_molecule_article_titles | difference(freshrss_backend_titles) | length == 0
-        fail_msg: >-
-          Postgres holds {{ freshrss_backend_titles }}, which is not the
-          {{ freshrss_molecule_article_titles }} served by the sidecar
-        success_msg: "Postgres holds the articles served by the sidecar"
-      vars:
-        freshrss_backend_titles: "{{ freshrss_backend_query.stdout_lines }}"
+        - name: Assert the articles from the sidecar feed are stored in Postgres
+          ansible.builtin.assert:
+            that:
+              - freshrss_backend_titles | length == freshrss_molecule_article_titles | length
+              - freshrss_molecule_article_titles | difference(freshrss_backend_titles) | length == 0
+            fail_msg: >-
+              Postgres holds {{ freshrss_backend_titles }}, which is not the
+              {{ freshrss_molecule_article_titles }} served by the sidecar
+            success_msg: "Postgres holds the articles served by the sidecar"
+          vars:
+            freshrss_backend_titles: "{{ freshrss_backend_query.stdout_lines }}"
 
-    - name: Show the FreshRSS verification summary
-      ansible.builtin.debug:
-        msg:
-          - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
-          - "FreshRSS version: {{ freshrss_served_version }}"
-          - "FreshRSS database: postgres"
-          - "FreshRSS articles fetched from the sidecar: {{ freshrss_molecule_article_titles | length }}"
+        - name: Show the FreshRSS verification summary
+          ansible.builtin.debug:
+            msg:
+              - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
+              - "FreshRSS version: {{ freshrss_served_version }}"
+              - "FreshRSS database: postgres"
+              - "FreshRSS articles fetched from the sidecar: {{ freshrss_molecule_article_titles | length }}"
 
       rescue:
         # Whatever went wrong, the reason is almost always in the systemd service log.

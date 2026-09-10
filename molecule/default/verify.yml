@@ -23,31 +23,31 @@
   tasks:
     - name: Verify that FreshRSS works
       block:
-    - name: Run the shared FreshRSS verification tasks
-      ansible.builtin.include_tasks: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/molecule/verify_tasks.yml"
+        - name: Run the shared FreshRSS verification tasks
+          ansible.builtin.include_tasks: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/molecule/verify_tasks.yml"
 
-    # Without this, the scenario would pass just the same if FreshRSS had
-    # quietly been installed onto a different database than the one configured.
-    - name: Check whether FreshRSS created a SQLite database
-      ansible.builtin.stat:
-        path: "{{ freshrss_molecule_sqlite_path }}"
-      register: freshrss_sqlite_database
+        # Without this, the scenario would pass just the same if FreshRSS had
+        # quietly been installed onto a different database than the one configured.
+        - name: Check whether FreshRSS created a SQLite database
+          ansible.builtin.stat:
+            path: "{{ freshrss_molecule_sqlite_path }}"
+          register: freshrss_sqlite_database
 
-    - name: Assert FreshRSS stores its data in SQLite
-      ansible.builtin.assert:
-        that:
-          - freshrss_sqlite_database.stat.exists
-          - freshrss_sqlite_database.stat.size > 0
-        fail_msg: "FreshRSS did not create a SQLite database at {{ freshrss_molecule_sqlite_path }}"
-        success_msg: "FreshRSS stores its data in SQLite"
+        - name: Assert FreshRSS stores its data in SQLite
+          ansible.builtin.assert:
+            that:
+              - freshrss_sqlite_database.stat.exists
+              - freshrss_sqlite_database.stat.size > 0
+            fail_msg: "FreshRSS did not create a SQLite database at {{ freshrss_molecule_sqlite_path }}"
+            success_msg: "FreshRSS stores its data in SQLite"
 
-    - name: Show the FreshRSS verification summary
-      ansible.builtin.debug:
-        msg:
-          - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
-          - "FreshRSS version: {{ freshrss_served_version }}"
-          - "FreshRSS database: sqlite ({{ freshrss_sqlite_database.stat.size }} bytes)"
-          - "FreshRSS articles fetched from the sidecar: {{ freshrss_molecule_article_titles | length }}"
+        - name: Show the FreshRSS verification summary
+          ansible.builtin.debug:
+            msg:
+              - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
+              - "FreshRSS version: {{ freshrss_served_version }}"
+              - "FreshRSS database: sqlite ({{ freshrss_sqlite_database.stat.size }} bytes)"
+              - "FreshRSS articles fetched from the sidecar: {{ freshrss_molecule_article_titles | length }}"
 
       rescue:
         # Whatever went wrong, the reason is almost always in the systemd service log.
