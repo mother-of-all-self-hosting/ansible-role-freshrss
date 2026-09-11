@@ -20,6 +20,10 @@
     freshrss_molecule_base_url: http://localhost:80
     freshrss_molecule_sqlite_path: "/{{ freshrss_identifier }}/data/users/{{ freshrss_molecule_user }}/db.sqlite"
 
+    freshrss_verify_units:
+      - freshrss.service
+      - mariadb.service
+
   tasks:
     - name: Verify that FreshRSS works
       block:
@@ -68,7 +72,7 @@
         - name: Show the FreshRSS verification summary
           ansible.builtin.debug:
             msg:
-              - "FreshRSS systemd: {{ freshrss_service.status.ActiveState }}"
+              - "FreshRSS systemd: {% for unit, state in freshrss_verify_units | zip(freshrss_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
               - "FreshRSS version: {{ freshrss_served_version }}"
               - "FreshRSS database: mariadb"
               - "FreshRSS articles fetched from the sidecar: {{ freshrss_molecule_article_titles | length }}"

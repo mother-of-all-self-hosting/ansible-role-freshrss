@@ -13,13 +13,14 @@
     file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
     name: freshrss_defaults
 
-- name: Wait for the FreshRSS systemd service to become active (up to 180s)
+- name: Wait for the FreshRSS systemd services to become active (up to 180s each)
   ansible.builtin.systemd_service:
-    name: freshrss.service
-  register: freshrss_service
-  until: freshrss_service.status.ActiveState == 'active'
+    name: "{{ item }}"
+  register: freshrss_services
+  until: freshrss_services.status.ActiveState == 'active'
   retries: 36
   delay: 5
+  loop: "{{ freshrss_verify_units }}"
   # So that giving up is reported by the assertion below rather than as a
   # wall of systemd unit properties.
   failed_when: false
@@ -27,17 +28,20 @@
 # `Restart=always` in the systemd unit means that even a container which crashes
 # and gets restarted reads as active here, so this is a precondition rather than
 # a result.
-- name: Assert the FreshRSS systemd service is active
+- name: Assert the FreshRSS systemd services are active
   ansible.builtin.assert:
-    that: freshrss_service.status.ActiveState == 'active'
-    fail_msg: "freshrss.service is not active ({{ freshrss_service.status.ActiveState }})"
-    success_msg: "freshrss.service is active"
+    that: freshrss_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
+    fail_msg: >-
+      Not every service is active:
+      {{ dict(freshrss_verify_units | zip(freshrss_services.results | map(attribute='status.ActiveState'))) }}
+    success_msg: "Every systemd service is active"
 
-- name: Retrieve the FreshRSS systemd service log for debugging
+- name: Retrieve the FreshRSS systemd services log for debugging
   when: freshrss_debug_service_enabled | bool
   ansible.builtin.command:
-    cmd: journalctl --no-pager --output=cat --unit=freshrss.service
+    cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
   changed_when: false
+  loop: "{{ freshrss_verify_units }}"
 
 # A service that systemd reports as active is not necessarily serving yet,
 # hence the retries on this first request rather than on later ones.
