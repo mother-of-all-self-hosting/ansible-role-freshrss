@@ -92,6 +92,12 @@ or on its contents staying put. `side_effect.yml` starts the sidecar,
 subscribes FreshRSS to it via `cli/import-for-user.php`, and fetches it via
 `cli/actualize-user.php`; `verify.yml` then asserts the articles arrived.
 
+FreshRSS 1.30.0 refuses to fetch from internal hosts unless they are
+allowlisted, and the sidecar is reached over the container network. Each
+scenario therefore names the sidecar host in `INTERNAL_HOST_ALLOWLIST`; without
+that entry `actualize-user.php` refuses the feed and the article assertions
+cannot pass.
+
 ## Scenarios
 
 Currently these testing scenarios are available:
