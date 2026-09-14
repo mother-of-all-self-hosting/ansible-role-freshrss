@@ -76,9 +76,16 @@ provisioner:
         # installation gives the tests a real instance to make assertions about.
         # The database host below is spelled exactly the way the role tells
         # administrators to spell it, so these tests fail if that advice is wrong.
+        #
+        # Since FreshRSS 1.30.0, requests to internal hosts are refused unless the
+        # host is allowlisted. The sidecar feed is served on the container network,
+        # so `INTERNAL_HOST_ALLOWLIST` has to name it for FreshRSS to fetch it at
+        # all. This travels through the same additional-variables mechanism a
+        # consumer would use.
         freshrss_environment_variables_additional_variables: |
           FRESHRSS_INSTALL=--api-enabled --db-type mysql --db-host {{ freshrss_database_host_mysql }}/mysqld.sock --db-user {{ freshrss_database_mysql_username }} --db-password {{ freshrss_database_mysql_password }} --db-base {{ freshrss_database_name }} --default-user {{ freshrss_molecule_user }} --environment production --base-url http://localhost/
           FRESHRSS_USER=--user {{ freshrss_molecule_user }} --password {{ freshrss_molecule_web_password }} --api-password {{ freshrss_molecule_api_password }} --no-default-feeds
+          INTERNAL_HOST_ALLOWLIST={{ freshrss_molecule_sidecar_identifier }}:80
         freshrss_systemd_required_services_list_auto: |
           {{
             (['mariadb.service'])
