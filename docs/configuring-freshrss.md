@@ -65,7 +65,7 @@ freshrss_hostname: "example.com"
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting FreshRSS under a subpath (by configuring the `freshrss_path_prefix` variable) does not seem to be possible due to FreshRSS's technical limitations. See [this issue](https://github.com/mother-of-all-self-hosting/mash-playbook/issues/116) for details.
+**Note**: hosting FreshRSS under a subpath (by configuring the `freshrss_path_prefix` variable) does not seem to be possible due to FreshRSS's technical limitations. Refer to [this issue](https://github.com/mother-of-all-self-hosting/mash-playbook/issues/116) for details.
 
 ### Configuring database
 
@@ -115,7 +115,7 @@ Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `freshrss_environment_variables_additional_variables` variable
 
-See [the official documentation](https://github.com/FreshRSS/FreshRSS/tree/edge/Docker#environment-variables) for a complete list of FreshRSS's config options that you can put in `freshrss_environment_variables_additional_variables`.
+Refer to [the official documentation](https://github.com/FreshRSS/FreshRSS/tree/edge/Docker#environment-variables) for a complete list of FreshRSS's config options that you can put in `freshrss_environment_variables_additional_variables`.
 
 ## Installing
 

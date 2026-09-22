@@ -45,7 +45,7 @@ pip3 install -r ./molecule/requirements.txt
 
 FreshRSS is configured through a web installation wizard, and this role
 deliberately leaves that step to the administrator: it prints the database
-credentials to type in (see [`tasks/print_db_credentials.yml`](../tasks/print_db_credentials.yml))
+credentials to type in (refer to [`tasks/print_db_credentials.yml`](../tasks/print_db_credentials.yml))
 rather than performing the installation.
 
 That makes FreshRSS an awkward thing to test honestly. An instance that has
