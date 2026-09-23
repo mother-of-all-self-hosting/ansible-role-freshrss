@@ -138,7 +138,7 @@ To get started, open the URL with a web browser, and follow the set up wizard.
 On the set up wizard, it is required to input database credentials to use a MySQL compatible database or Postgres. You can output its credentials by running the playbook as below:
 
 ```sh
-ansible-playbook -i inventory/hosts setup.yml --tags=print-freshrss-db-credentials
+ansible-playbook -i inventory/hosts setup.yml --tags=print-db-credentials-freshrss
 ```
 
 ## Troubleshooting

@@ -21,7 +21,7 @@
 - name: Perform tasks to print database credentials for FreshRSS
   when: freshrss_enabled | bool
   tags:
-    - print-freshrss-db-credentials
+    - print-db-credentials-freshrss
     - molecule-notest
   block:
     - name: Print database credentials for FreshRSS
