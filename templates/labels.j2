@@ -21,15 +21,15 @@ traefik.http.middlewares.{{ freshrss_identifier }}-basic-auth.basicauth.users={{
 {% endif %}
 
 {% if freshrss_container_labels_traefik_path_prefix != '/' %}
-traefik.http.middlewares.{{ freshrss_identifier }}-slashless-redirect.redirectregex.regex=({{ freshrss_container_labels_traefik_path_prefix | quote }})$
+traefik.http.middlewares.{{ freshrss_identifier }}-slashless-redirect.redirectregex.regex=^(https?://[^/]+{{ freshrss_container_labels_traefik_path_prefix | regex_escape }})$
 traefik.http.middlewares.{{ freshrss_identifier }}-slashless-redirect.redirectregex.replacement=${1}/
 {% set middlewares = middlewares + [freshrss_identifier + '-slashless-redirect'] %}
 {% endif %}
 
-{#
-	Intentionally not adding a stripPrefix middleware.
-	FreshRSS seems to serve itself under the same prefix it sees in the BASE_URL environment variable.
-#}
+{% if freshrss_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ freshrss_identifier }}-strip-prefix.stripprefix.prefixes={{ freshrss_container_labels_traefik_path_prefix }}
+{% set middlewares = middlewares + [freshrss_identifier + '-strip-prefix'] %}
+{% endif %}
 
 {% if freshrss_container_labels_traefik_additional_request_headers.keys() | length > 0 %}
 {% for name, value in freshrss_container_labels_traefik_additional_request_headers.items() %}

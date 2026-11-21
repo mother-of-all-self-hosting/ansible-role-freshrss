@@ -65,8 +65,6 @@ freshrss_hostname: "example.com"
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting FreshRSS under a subpath (by configuring the `freshrss_path_prefix` variable) does not seem to be possible due to FreshRSS's technical limitations. Refer to [this issue](https://github.com/mother-of-all-self-hosting/mash-playbook/issues/116) for details.
-
 ### Configuring database
 
 #### Specify database

@@ -280,6 +280,8 @@ freshrss_database_host_postgres: "{{ freshrss_database_postgres_socket_path_cont
 #                                                                      #
 ########################################################################
 
+freshrss_config_base_url: "{{ freshrss_scheme }}://{{ freshrss_hostname }}{{ freshrss_path_prefix }}"
+
 # Cron job to refresh feeds at specified minutes for FreshRSS
 freshrss_cron_min: "2,32"
 
