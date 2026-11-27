@@ -56,7 +56,7 @@
       failed_when: false
 
     - name: Ensure FreshRSS container network does not exist
-      when: freshrss_container_network_deletion_enabled
+      when: freshrss_container_network_deletion_enabled and freshrss_container_network != 'host'
       block:
         - name: Ensure FreshRSS container network does not exist via community.docker.docker_network
           when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
